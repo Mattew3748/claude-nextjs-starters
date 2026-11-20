@@ -8,5 +8,20 @@
       "Bash(npm run format)",
       "Bash(npx shadcn@latest add:*)"
     ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/format-and-log.sh",
+            "timeout": 30,
+            "statusMessage": "Prettier 포맷 중..."
+          }
+        ]
+      }
+    ]
   }
 }

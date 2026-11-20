@@ -5,9 +5,11 @@ Claude 학습용으로 웹앱을 빠르게 만들어보는 스타터 킷. **백�
 @AGENTS.md
 
 ## 스택
+
 Next.js (App Router, Turbopack) · React · TypeScript · Tailwind CSS v4 · shadcn/ui (Base UI 기반) · Zustand · react-hook-form + zod · next-themes · sonner
 
 ## 명령어
+
 ```bash
 npm run dev          # 개발 서버 (http://localhost:4000)
 npm run build        # 프로덕션 빌드
@@ -15,9 +17,12 @@ npm run lint         # ESLint
 npm run typecheck    # tsc --noEmit
 npm run format       # Prettier (tailwind 클래스 자동 정렬)
 ```
+
 작업 끝나면 `lint` → `typecheck` → `build` 순으로 확인.
+커밋 전에는 `/validation` 으로 소스 전체 통합 검증(포맷·린트·타입·규칙·빌드·라우트 스모크) 후 `/commit`.
 
 ## 폴더 규칙
+
 ```
 src/app/                 라우트 (page.tsx, layout.tsx)
 src/components/ui/       shadcn 생성물 — 직접 수정 지양, 필요하면 래퍼 컴포넌트로 감싼다
@@ -28,8 +33,9 @@ src/hooks/               커스텀 훅
 ```
 
 ## 규칙
+
 - 서버/DB/API 라우트를 만들지 않는다. 데이터는 `src/stores/` 의 persist 스토어에 둔다.
-- persist 스토어는 `skipHydration: true` + `useTodoHydrated` 같은 훅으로 마운트 후 복원 (SSR 하이드레이션 불일치 방지). 스토어를 쓰는 페이지는 `"use client"`.
+- persist 스토어는 `skipHydration: true` + `useStoreHydrated(store)` (`src/hooks/use-hydrated.ts`) 로 마운트 후 복원 (SSR 하이드레이션 불일치 방지). 스토어를 쓰는 페이지는 `"use client"`.
 - 폼은 react-hook-form + zod(`zodResolver`) + `components/ui/field.tsx`. 스키마는 `lib/schemas/` 에 두고 타입은 `z.infer` 로 파생.
 - 스타일은 Tailwind 유틸리티 + shadcn 토큰(`bg-background`, `text-muted-foreground` 등). 하드코딩 색상 지양. 다크모드는 `dark:` 변형.
 - 클래스 병합은 `cn()` (`@/lib/utils`).
@@ -37,6 +43,7 @@ src/hooks/               커스텀 훅
 - 이 Next.js 는 학습 데이터와 다를 수 있다 — API 를 쓰기 전 `node_modules/next/dist/docs/` 확인 (AGENTS.md 참고).
 
 ## 새 기능 추가 레시피
+
 1. `lib/schemas/<name>.ts` — zod 스키마와 타입
 2. `stores/<name>-store.ts` — zustand + persist (`name` 키는 고유하게)
 3. `components/<name>/` — 폼·목록 컴포넌트
@@ -44,6 +51,7 @@ src/hooks/               커스텀 훅
 5. 필요한 shadcn 컴포넌트: `npx shadcn@latest add <component>`
 
 ## 예제
+
 - `/todos` — 폼 검증 + 스토어 CRUD + 토스트
 - `/dashboard` — 스토어 데이터 집계 카드 + 테이블
 - `/demo/*` — 메인 카드에서 연결되는 기술별 데모 (목록은 `src/lib/demos.ts` 한 곳에서 관리, 메인 카드·사이드 메뉴가 공유)

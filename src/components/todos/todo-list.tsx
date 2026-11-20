@@ -1,12 +1,7 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
-import { toast } from "sonner";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import { PRIORITY_LABEL } from "@/lib/schemas/todo";
-import { cn } from "@/lib/utils";
+import { TodoItem } from "./todo-item";
 import { useTodoStore } from "@/stores/todo-store";
 
 export function TodoList() {
@@ -28,38 +23,7 @@ export function TodoList() {
     <div className="flex flex-col gap-3">
       <ul className="flex flex-col divide-y rounded-md border">
         {todos.map((t) => (
-          <li key={t.id} className="flex items-start gap-3 p-3">
-            <Checkbox
-              checked={t.done}
-              onCheckedChange={() => toggle(t.id)}
-              aria-label={`${t.title} 완료 표시`}
-              className="mt-1"
-            />
-            <div className="flex-1">
-              <div className="flex items-center gap-2">
-                <span className={cn(t.done && "text-muted-foreground line-through")}>
-                  {t.title}
-                </span>
-                <Badge variant={t.priority === "high" ? "destructive" : "secondary"}>
-                  {PRIORITY_LABEL[t.priority]}
-                </Badge>
-              </div>
-              {t.description && (
-                <p className="text-sm text-muted-foreground">{t.description}</p>
-              )}
-            </div>
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="삭제"
-              onClick={() => {
-                remove(t.id);
-                toast("삭제했습니다");
-              }}
-            >
-              <Trash2 className="size-4" />
-            </Button>
-          </li>
+          <TodoItem key={t.id} todo={t} onToggle={toggle} onRemove={remove} />
         ))}
       </ul>
       {doneCount > 0 && (
